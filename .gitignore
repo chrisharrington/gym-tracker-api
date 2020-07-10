@@ -105,6 +105,7 @@ dist
 
 # Transpiled JavaScript files
 *.js
+*.js.map
 
 # Database
 db/
