@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  transpiler:
+    build:
+      context: .
+      dockerfile: ./transpiler/Dockerfile
+    container_name: gym-transpiler
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+    logging:
+      options:
+        max-file: '3'
+        max-size: '1m'
+
+  database:
+    image: 'mongo'
+    container_name: gym-database
+    restart: unless-stopped
+    volumes:
+      - ./db:/data/db
+    ports:
+      - 27017:27018
+
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    container_name: gym-api
+    restart: unless-stopped
+    ports:
+      - 7777:7777
+    volumes:
+      - ./:/app
+    depends_on:
+      - database
+      - transpiler
